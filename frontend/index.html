@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tweet Sentiment Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+    }
+    .container h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .container textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    .container button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .container button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tweet Sentiment Analysis</h1>
+    <textarea id="tweet-input" placeholder="Enter your tweet here..."></textarea>
+    <button id="analyze-btn">Analyze Sentiment</button>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    const apiUrl = "http://127.0.0.1:8000/tweet-sentiment";  // URL of the FastAPI backend
+
+    document.getElementById("analyze-btn").addEventListener("click", async () => {
+      const tweet = document.getElementById("tweet-input").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.textContent = "Analyzing...";
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: tweet }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch sentiment analysis");
+        }
+
+        const data = await response.json();
+        let sentimentText;
+        switch (data.sentiment) {
+          case -1:
+            sentimentText = "Negative";
+            break;
+          case 0:
+            sentimentText = "Neutral";
+            break;
+          case 1:
+            sentimentText = "Positive";
+            break;
+          default:
+            sentimentText = "";
+        }
+        resultDiv.textContent = `Sentiment: ${sentimentText}`;
+      } catch (error) {
+        console.error(error);
+        resultDiv.textContent = "Error analyzing sentiment.";
+      }
+    });
+  </script>
+</body>
+</html>
