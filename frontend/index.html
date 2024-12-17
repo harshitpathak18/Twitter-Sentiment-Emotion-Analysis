@@ -24,6 +24,7 @@
 
     <!-- Body -->
     <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 m-5 p-5 ">
+        
         <!-- Left -->
         <div class="shadow-2xl border border-2 border-white rounded">
             <div class="flex justify-center m-4">
@@ -35,9 +36,9 @@
             </div>
 
             <div class="emoji-container flex justify-center gap-20 m-5" id="sentiment-emojis">
-                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851398.png" alt="" id="negative" class="h-12" >
-                <img src="https://cdn-icons-png.flaticon.com/128/13106/13106944.png" alt="" id="neutral" class="h-12">
-                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851206.png" alt="" id="positive" class="h-12">
+                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851398.png" alt="" id="negative" class="h-12 rounded-full" >
+                <img src="https://cdn-icons-png.flaticon.com/128/13106/13106944.png" alt="" id="neutral" class="h-12 rounded-full">
+                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851206.png" alt="" id="positive" class="h-12 rounded-full">
             </div>
 
             <div class="flex justify-center m-1" id="sentiment-emojis">
@@ -51,15 +52,14 @@
 
 
 
-            <div class="flex justify-center  mb-5">
+            <div class="flex justify-center mb-5">
                 <div>
                     <button type="button" id="analyze-btn" class="m-2 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                         Tweets Analysis
                     </button>    
                 </div>
             </div>
-
-            
+  
         </div>
 
 
@@ -68,7 +68,10 @@
 
         <!-- Right -->
         <div class="">
-             
+            <div class="flex justify-center" class="m-1">
+                <img src="https://d1ewbp317vsrbd.cloudfront.net/6c19857f-7f5b-4f76-b44c-469d9781af8b.png" class="max-w-96 m-5 p-5">
+            </div>
+
         </div>
     </div>
 
@@ -87,23 +90,30 @@
         document.getElementById("analyze-btn").addEventListener("click", async () => {
             const tweet = document.getElementById("tweet").value.trim(); // Trim extra spaces
             const resultDiv = document.getElementById("result");
+
+            document.getElementById("positive").style.opacity = "1";
+            document.getElementById("neutral").style.opacity = "1";
+            document.getElementById("negative").style.opacity = "1";
+
+            document.getElementById("negative").style.boxShadow = ""
+            document.getElementById("positive").style.boxShadow = ""
+            document.getElementById("neutral").style.boxShadow = ""
+                        
     
             // Validation: Check if the input field is empty
             if (!tweet) {
                 resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-red-300">Please, enter a tweet to analyze!</h3>`;
-                // Hide all emojis initially
-                document.getElementById("negative").style.opacity = '1';
-                document.getElementById("neutral").style.opacity = '1';
-                document.getElementById("positive").style.opacity = '1';
+                document.getElementById("positive").style.opacity = "1";
+                document.getElementById("neutral").style.opacity = "1";
+                document.getElementById("negative").style.opacity = "1";
+
+                document.getElementById("negative").style.boxShadow = ""
+                document.getElementById("positive").style.boxShadow = ""
+                document.getElementById("neutral").style.boxShadow = ""
                 return; // Stop execution
             }
     
             resultDiv.textContent = "Analyzing...";
-    
-            // Hide all emojis initially
-            document.getElementById("negative").style.opacity = '1';
-            document.getElementById("neutral").style.opacity = '1';
-            document.getElementById("positive").style.opacity = '1';
     
             try {
                 const response = await fetch(apiUrl, {
@@ -124,25 +134,25 @@
                     case -1:
                         sentimentText = "Negative";
                         resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-red-300">${sentimentText} Tweet</h3>`;
-                        document.getElementById("negative").style.opacity = "1";
-                        document.getElementById("positive").style.opacity = "0.3";
-                        document.getElementById("neutral").style.opacity = "0.3";
+                        document.getElementById("negative").style.boxShadow = "0px 0px 30px rgba(255, 0, 0, 1)";
+                        document.getElementById("positive").style.opacity = "0.5";
+                        document.getElementById("neutral").style.opacity = "0.5";
                         break;
     
                     case 0:
                         sentimentText = "Neutral";
                         resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-indigo-200">${sentimentText} Tweet</h3>`;
-                        document.getElementById("negative").style.opacity = "0.3";
-                        document.getElementById("positive").style.opacity = "0.3";
-                        document.getElementById("neutral").style.opacity = "1";
+                        document.getElementById("neutral").style.boxShadow = "0px 0px 30px rgba(0, 0, 255, 0.7)";
+                        document.getElementById("positive").style.opacity = "0.5";
+                        document.getElementById("negative").style.opacity = "0.5";
                         break;
     
                     case 1:
                         sentimentText = "Positive";
                         resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-green-300">${sentimentText} Tweet</h3>`;
-                        document.getElementById("negative").style.opacity = "0.3";
-                        document.getElementById("positive").style.opacity = "1";
-                        document.getElementById("neutral").style.opacity = "0.3";
+                        document.getElementById("positive").style.boxShadow = "0px 0px 30px rgba(0, 255, 0, 1)";
+                        document.getElementById("neutral").style.opacity = "0.5";
+                        document.getElementById("negative").style.opacity = "0.5";
                         break;
     
                     default:
