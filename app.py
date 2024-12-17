@@ -98,5 +98,6 @@ def predict_sentiment(tweet):
 async def get_sentiment(tweet: Tweet):
     print(tweet)
     sentiment = predict_sentiment(tweet.text)
+    print(sentiment)
     return {"sentiment": sentiment}
 

@@ -53,6 +53,15 @@
       font-size: 18px;
       color: #333;
     }
+    .emoji {
+      font-size: 40px;
+      margin-top: 10px;
+    }
+    .highlight {
+      font-weight: bold;
+      font-size: 20px;
+      color: #007BFF;
+    }
   </style>
 </head>
 <body>
@@ -61,7 +70,15 @@
     <textarea id="tweet-input" placeholder="Enter your tweet here..."></textarea>
     <button id="analyze-btn">Analyze Sentiment</button>
     <div class="result" id="result"></div>
+
+
+    <div class="emoji" id="emoji-container">
+        <img id="negative-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742752.png" alt="Negative" style="opacity: 1;" width="40" height="40">
+        <img id="neutral-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742774.png" alt="Neutral" style="opacity: 1;" width="40" height="40">
+        <img id="positive-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742751.png" alt="Positive" style="opacity: 1;" width="40" height="40">
+      </div>
   </div>
+
   <script>
     const apiUrl = "http://127.0.0.1:8000/tweet-sentiment";  // URL of the FastAPI backend
 
@@ -69,6 +86,11 @@
       const tweet = document.getElementById("tweet-input").value;
       const resultDiv = document.getElementById("result");
       resultDiv.textContent = "Analyzing...";
+
+      // Hide all emojis initially
+      document.getElementById("negative-emoji").style.opacity = '1';
+      document.getElementById("neutral-emoji").style.opacity = '1';
+      document.getElementById("positive-emoji").style.opacity = '1';
 
       try {
         const response = await fetch(apiUrl, {
@@ -88,17 +110,30 @@
         switch (data.sentiment) {
           case -1:
             sentimentText = "Negative";
+            document.getElementById("negative-emoji").style.opacity = "1";
+            document.getElementById("negative-emoji").style.borderColor = "red";
+            document.getElementById("positive-emoji").style.opacity = "0.6";
+            document.getElementById("neutral-emoji").style.opacity = "0.6";
             break;
           case 0:
             sentimentText = "Neutral";
+            document.getElementById("negative-emoji").style.opacity = "0.6";
+            document.getElementById("positive-emoji").style.opacity = "0.6";
+            document.getElementById("neutral-emoji").style.opacity = "1";
+            document.getElementById("neutral-emoji").style.borderColor = "red";
             break;
           case 1:
             sentimentText = "Positive";
+            document.getElementById("negative-emoji").style.opacity = "0.6";
+            document.getElementById("positive-emoji").style.opacity = "1";
+            document.getElementById("positive-emoji").style.borderColor = "red";
+            document.getElementById("neutral-emoji").style.opacity = "0.6";
             break;
           default:
             sentimentText = "";
         }
-        resultDiv.textContent = `Sentiment: ${sentimentText}`;
+
+        resultDiv.innerHTML = `Sentiment: <span class="highlight">${sentimentText}</span>`;
       } catch (error) {
         console.error(error);
         resultDiv.textContent = "Error analyzing sentiment.";
