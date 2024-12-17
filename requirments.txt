@@ -1,6 +1,0 @@
-re
-nltk
-numpy
-pandas
-scikit-learn
-fastapi

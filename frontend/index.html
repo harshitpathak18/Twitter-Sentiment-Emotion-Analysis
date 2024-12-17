@@ -1,144 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tweet Sentiment Analysis</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      padding: 20px 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 400px;
-    }
-    .container h1 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .container textarea {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    .container button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .container button:hover {
-      background-color: #0056b3;
-    }
-    .result {
-      margin-top: 15px;
-      font-size: 18px;
-      color: #333;
-    }
-    .emoji {
-      font-size: 40px;
-      margin-top: 10px;
-    }
-    .highlight {
-      font-weight: bold;
-      font-size: 20px;
-      color: #007BFF;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Twitter Sentiment Analysis</title>
 </head>
-<body>
-  <div class="container">
-    <h1>Tweet Sentiment Analysis</h1>
-    <textarea id="tweet-input" placeholder="Enter your tweet here..."></textarea>
-    <button id="analyze-btn">Analyze Sentiment</button>
-    <div class="result" id="result"></div>
+
+<body class="font-sans overflow-hidden" style="background: linear-gradient(90deg, hsla(235, 100%, 78%, 1) 0%, hsla(222, 77%, 33%, 1) 100%);">
+
+    <!-- Header -->
+    <nav class="bg-gradient-to-tr from-indigo-600 to-purple-500">
+        <div class="max-w-screen-xl flex items-center justify-center mx-auto p-2">
+            <a href="" class="flex items-center space-x-2 rtl:space-x-reverse">
+                <img src="https://cdn-icons-png.flaticon.com/128/5968/5968958.png" class="h-10 pl-5" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white pl-4 font-semibold italic">Sentiment & Emotion Analyzer</span>
+            </a>
+        </div>
+    </nav>
+
+    
+
+    <!-- Body -->
+    <div class="grid grid-flow-col grid-cols-2 grid-rows-1 gap-1 m-5 p-5 ">
+        <!-- Left -->
+        <div class="shadow-2xl border border-2 border-white rounded">
+            <div class="flex justify-center m-4">
+                <span class="text-4xl font-manrope font-black leading-snug text-transparent p-0.5" style="background: white; -webkit-background-clip: text; ">Sentiment Analysis</span>
+            </div>
+
+            <div>
+                <p class="text-white font-medium p-1 m-1 italic">Every tweet tells a story, uncover the pulse of the world, one sentiment at a time. Categorize each tweet as Negative, Neutral, or Positive based on its sentiment.</p>
+            </div>
+
+            <div class="emoji-container flex justify-center gap-20 m-5" id="sentiment-emojis">
+                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851398.png" alt="" id="negative" class="h-12" >
+                <img src="https://cdn-icons-png.flaticon.com/128/13106/13106944.png" alt="" id="neutral" class="h-12">
+                <img src="https://cdn-icons-png.flaticon.com/128/10851/10851206.png" alt="" id="positive" class="h-12">
+            </div>
+
+            <div class="flex justify-center m-1" id="sentiment-emojis">
+                <span id = "result"></span>
+            </div>
+
+            <div class="flex justify-center p-3">
+                <textarea id="tweet" class="border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent rounded p-2 min-w-full" placeholder="Write the tweet"></textarea>
+            </div>
 
 
-    <div class="emoji" id="emoji-container">
-        <img id="negative-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742752.png" alt="Negative" style="opacity: 1;" width="40" height="40">
-        <img id="neutral-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742774.png" alt="Neutral" style="opacity: 1;" width="40" height="40">
-        <img id="positive-emoji" src="https://cdn-icons-png.flaticon.com/128/742/742751.png" alt="Positive" style="opacity: 1;" width="40" height="40">
-      </div>
-  </div>
 
-  <script>
-    const apiUrl = "http://127.0.0.1:8000/tweet-sentiment";  // URL of the FastAPI backend
 
-    document.getElementById("analyze-btn").addEventListener("click", async () => {
-      const tweet = document.getElementById("tweet-input").value;
-      const resultDiv = document.getElementById("result");
-      resultDiv.textContent = "Analyzing...";
+            <div class="flex justify-center  mb-5">
+                <div>
+                    <button type="button" id="analyze-btn" class="m-2 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Tweets Analysis
+                    </button>    
+                </div>
+            </div>
 
-      // Hide all emojis initially
-      document.getElementById("negative-emoji").style.opacity = '1';
-      document.getElementById("neutral-emoji").style.opacity = '1';
-      document.getElementById("positive-emoji").style.opacity = '1';
+            
+        </div>
 
-      try {
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text: tweet }),
+
+
+
+
+        <!-- Right -->
+        <div class="">
+             
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script>
+        // API Logic for Sentiment Analysis
+        const apiUrl = "http://127.0.0.1:8000/tweet-sentiment"; // URL of the FastAPI backend
+    
+        document.getElementById("analyze-btn").addEventListener("click", async () => {
+            const tweet = document.getElementById("tweet").value.trim(); // Trim extra spaces
+            const resultDiv = document.getElementById("result");
+    
+            // Validation: Check if the input field is empty
+            if (!tweet) {
+                resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-red-300">Please, enter a tweet to analyze!</h3>`;
+                // Hide all emojis initially
+                document.getElementById("negative").style.opacity = '1';
+                document.getElementById("neutral").style.opacity = '1';
+                document.getElementById("positive").style.opacity = '1';
+                return; // Stop execution
+            }
+    
+            resultDiv.textContent = "Analyzing...";
+    
+            // Hide all emojis initially
+            document.getElementById("negative").style.opacity = '1';
+            document.getElementById("neutral").style.opacity = '1';
+            document.getElementById("positive").style.opacity = '1';
+    
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ text: tweet }),
+                });
+    
+                if (!response.ok) {
+                    throw new Error("Failed to fetch sentiment analysis");
+                }
+    
+                const data = await response.json();
+                let sentimentText;
+                switch (data.sentiment) {
+                    case -1:
+                        sentimentText = "Negative";
+                        resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-red-300">${sentimentText} Tweet</h3>`;
+                        document.getElementById("negative").style.opacity = "1";
+                        document.getElementById("positive").style.opacity = "0.3";
+                        document.getElementById("neutral").style.opacity = "0.3";
+                        break;
+    
+                    case 0:
+                        sentimentText = "Neutral";
+                        resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-indigo-200">${sentimentText} Tweet</h3>`;
+                        document.getElementById("negative").style.opacity = "0.3";
+                        document.getElementById("positive").style.opacity = "0.3";
+                        document.getElementById("neutral").style.opacity = "1";
+                        break;
+    
+                    case 1:
+                        sentimentText = "Positive";
+                        resultDiv.innerHTML = `<h3 class="text-medium font-manrope font-black leading-snug text-transparent p-0.5 text-green-300">${sentimentText} Tweet</h3>`;
+                        document.getElementById("negative").style.opacity = "0.3";
+                        document.getElementById("positive").style.opacity = "1";
+                        document.getElementById("neutral").style.opacity = "0.3";
+                        break;
+    
+                    default:
+                        sentimentText = "";
+                }
+            } catch (error) {
+                console.error(error);
+                resultDiv.textContent = "Error analyzing sentiment.";
+            }
         });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch sentiment analysis");
-        }
-
-        const data = await response.json();
-        let sentimentText;
-        switch (data.sentiment) {
-          case -1:
-            sentimentText = "Negative";
-            document.getElementById("negative-emoji").style.opacity = "1";
-            document.getElementById("negative-emoji").style.borderColor = "red";
-            document.getElementById("positive-emoji").style.opacity = "0.6";
-            document.getElementById("neutral-emoji").style.opacity = "0.6";
-            break;
-          case 0:
-            sentimentText = "Neutral";
-            document.getElementById("negative-emoji").style.opacity = "0.6";
-            document.getElementById("positive-emoji").style.opacity = "0.6";
-            document.getElementById("neutral-emoji").style.opacity = "1";
-            document.getElementById("neutral-emoji").style.borderColor = "red";
-            break;
-          case 1:
-            sentimentText = "Positive";
-            document.getElementById("negative-emoji").style.opacity = "0.6";
-            document.getElementById("positive-emoji").style.opacity = "1";
-            document.getElementById("positive-emoji").style.borderColor = "red";
-            document.getElementById("neutral-emoji").style.opacity = "0.6";
-            break;
-          default:
-            sentimentText = "";
-        }
-
-        resultDiv.innerHTML = `Sentiment: <span class="highlight">${sentimentText}</span>`;
-      } catch (error) {
-        console.error(error);
-        resultDiv.textContent = "Error analyzing sentiment.";
-      }
-    });
-  </script>
+    </script>
+    
 </body>
+
 </html>
